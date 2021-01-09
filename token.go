@@ -54,7 +54,7 @@ func (c *Client) updateToken() error {
 
 		// save token
 		c.token = string(matches[1])
-		_ = ioutil.WriteFile(c.tokenLocationFile, matches[1], 0644)
+		_ = ioutil.WriteFile(c.tokenLocationFile, matches[1], 0755)
 		return nil
 	}
 	return fmt.Errorf("can't retrieve token")

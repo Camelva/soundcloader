@@ -79,7 +79,7 @@ func (c *Client) downloadThumbnail(s string) (string, error) {
 		return "", err
 	}
 
-	if err := ioutil.WriteFile(fileLocation, content, 0644); err != nil {
+	if err := ioutil.WriteFile(fileLocation, content, 0755); err != nil {
 		return "", err
 	}
 	return fileLocation, nil

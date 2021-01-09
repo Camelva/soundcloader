@@ -182,7 +182,7 @@ func (c *Client) nativeLoad(fileLocation string, uri string, useOriginalName boo
 		return "", err
 	}
 
-	err = ioutil.WriteFile(fileLocation, res, 0644)
+	err = ioutil.WriteFile(fileLocation, res, 0755)
 	return fileLocation, err
 }
 
