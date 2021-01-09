@@ -3,7 +3,6 @@ package soundcloader
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -19,7 +18,6 @@ type Stream struct {
 
 func (s *Stream) Get() (fileLocation string, err error) {
 	// make sure output folder exist
-	log.Printf("out folder: %s", s.parent.client.OutputFolder)
 	err = os.MkdirAll(s.parent.client.OutputFolder, 0755)
 	if err != nil {
 		return "", fmt.Errorf("cant access output folder: %s", err)
