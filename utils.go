@@ -7,7 +7,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -72,7 +72,7 @@ func (c *Client) downloadThumbnail(s string) (string, error) {
 		return "", err
 	}
 	name := u.EscapedPath()
-	fileLocation := path.Join(c.OutputFolder, name)
+	fileLocation := filepath.Join(c.OutputFolder, name)
 
 	content, err := c.fetch(s, false)
 	if err != nil {

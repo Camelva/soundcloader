@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 type Stream struct {
@@ -18,11 +18,14 @@ type Stream struct {
 
 func (s *Stream) Get() (fileLocation string, err error) {
 	// make sure output folder exist
-	_ = os.MkdirAll(s.parent.client.OutputFolder, 0644)
+	err = os.MkdirAll(s.parent.client.OutputFolder, 0644)
+	if err != nil {
+		return "", fmt.Errorf("cant access output folder: %s", err)
+	}
 
 	if s.Format != "original" {
 		filename := fmt.Sprintf("%s.%s", s.parent.ID, s.Extension)
-		fileLocation = path.Join(s.parent.client.OutputFolder, filename)
+		fileLocation = filepath.Join(s.parent.client.OutputFolder, filename)
 		if alreadyExist(fileLocation) {
 			return fileLocation, nil
 		}

@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"regexp"
 )
 
@@ -23,7 +23,7 @@ func (c *Client) getToken() error {
 
 func (c *Client) updateToken() error {
 	if c.tokenLocationFile == "" {
-		c.tokenLocationFile = path.Join(os.TempDir(), "soundcloud-token.txt")
+		c.tokenLocationFile = filepath.Join(os.TempDir(), "soundcloud-token.txt")
 	}
 
 	var scriptRE = regexp.MustCompile(`<script[^>]+src="([^"]+)"`)

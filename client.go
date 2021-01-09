@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path"
+	"path/filepath"
 	"time"
 )
 
@@ -34,8 +34,8 @@ type Client struct {
 
 var DefaultClient = &Client{
 	HTTPClient:        http.Client{Timeout: 3 * time.Minute},
-	tokenLocationFile: path.Join(os.TempDir(), "soundcloud-token.txt"),
-	OutputFolder:      path.Join(".", "out"),
+	tokenLocationFile: filepath.Join(os.TempDir(), "soundcloud-token.txt"),
+	OutputFolder:      filepath.Join(".", "out"),
 }
 
 func (c *Client) SetDebug(b bool) {
@@ -170,7 +170,7 @@ func (c *Client) nativeLoad(fileLocation string, uri string, useOriginalName boo
 
 	if useOriginalName {
 		name := filenameFromHeader(resp.Header)
-		fileLocation = path.Join(fileLocation, name)
+		fileLocation = filepath.Join(fileLocation, name)
 
 		if alreadyExist(fileLocation) {
 			return fileLocation, nil
