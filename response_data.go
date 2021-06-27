@@ -115,9 +115,9 @@ type metadataV2 struct {
 	//UserID            int       `json:"user_id"`
 	//MonetizationModel string    `json:"monetization_model"`
 	//WaveformURL       string    `json:"waveform_url"`
-	Permalink string `json:"permalink"`
-	//PermalinkURL      string    `json:"permalink_url"`
-	User userV2 `json:"user"`
+	Permalink    string `json:"permalink"`
+	PermalinkURL string `json:"permalink_url"`
+	User         userV2 `json:"user"`
 	//PlaybackCount     int       `json:"playback_count"`
 }
 

@@ -11,14 +11,15 @@ import (
 type Song struct {
 	client *Client
 
-	ID          int
-	Permalink   string
-	Streams     []Stream
-	Title       string
-	Author      string
-	Duration    time.Duration
-	PublishDate time.Time
-	Thumbnail   string
+	ID           int
+	Permalink    string
+	PermalinkURL string
+	Streams      []Stream
+	Title        string
+	Author       string
+	Duration     time.Duration
+	PublishDate  time.Time
+	Thumbnail    string
 
 	streamCounter int
 }
@@ -29,6 +30,7 @@ func (s *Song) parseSongInfo(meta *metadataV2) {
 	}
 	s.ID = meta.ID
 	s.Permalink = meta.Permalink
+	s.Permalink = meta.PermalinkURL
 	s.Title = meta.Title
 	s.Author = meta.User.Username
 
