@@ -30,7 +30,7 @@ func (s *Song) parseSongInfo(meta *metadataV2) {
 	}
 	s.ID = meta.ID
 	s.Permalink = meta.Permalink
-	s.Permalink = meta.PermalinkURL
+	s.PermalinkURL = meta.PermalinkURL
 	s.Title = meta.Title
 	s.Author = meta.User.Username
 
