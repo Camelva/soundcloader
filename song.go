@@ -2,6 +2,7 @@ package soundcloader
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -10,21 +11,26 @@ import (
 type Song struct {
 	client *Client
 
-	ID          int
-	Permalink   string
-	Streams     []Stream
-	Title       string
-	Author      string
-	Duration    time.Duration
-	PublishDate time.Time
-	Thumbnail   string
+	ID           int
+	Permalink    string
+	PermalinkURL string
+	Streams      []Stream
+	Title        string
+	Author       string
+	Duration     time.Duration
+	PublishDate  time.Time
+	Thumbnail    string
 
 	streamCounter int
 }
 
 func (s *Song) parseSongInfo(meta *metadataV2) {
+	if s.client.Debug {
+		log.Printf("meta: %#v", meta)
+	}
 	s.ID = meta.ID
 	s.Permalink = meta.Permalink
+	s.PermalinkURL = meta.PermalinkURL
 	s.Title = meta.Title
 	s.Author = meta.User.Username
 
@@ -77,15 +83,28 @@ func (s *Song) increaseCounter() {
 }
 
 func (s *Song) GetNext() (filename string, err error) {
+	if s.client.Debug {
+		log.Printf("Start getting [%d] %s", s.ID, s.Permalink)
+		log.Printf("Streams: %#v", s.Streams)
+	}
 	filename, err = s.Get(s.streamCounter)
 	s.increaseCounter()
 
 	if err == EmptyStream {
+		if s.client.Debug {
+			log.Printf("stream #%d empty", s.streamCounter-1)
+		}
 		for i := 1; i < len(s.Streams); i++ {
+			if s.client.Debug {
+				log.Printf("trying next stream #%d", s.streamCounter)
+			}
 			filename, err = s.Get(s.streamCounter)
 			s.increaseCounter()
 
 			if err == EmptyStream {
+				if s.client.Debug {
+					log.Printf("stream #%d empty", s.streamCounter-1)
+				}
 				continue
 			}
 			break
