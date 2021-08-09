@@ -116,7 +116,11 @@ func (s *Song) Get(i int) (filename string, err error) {
 		return
 	}
 	if s.Thumbnail != "" {
-		err = s.client.ffmpegAddThumbnail(filename, s.Thumbnail)
+		// if we couldn't add thumbnail - its not critical, dont return this error
+		e := s.client.ffmpegAddThumbnail(filename, s.Thumbnail)
+		if e != nil {
+			s.client.Logger.Printf("can't get song's thumbnail: %s", e)
+		}
 	}
 	return
 }

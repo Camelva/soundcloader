@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -27,6 +28,7 @@ type Client struct {
 	HTTPClient   http.Client
 	OutputFolder string
 	Debug        bool
+	Logger       *log.Logger
 
 	token             string
 	tokenLocationFile string
@@ -36,6 +38,7 @@ var DefaultClient = &Client{
 	HTTPClient:        http.Client{Timeout: 3 * time.Minute},
 	tokenLocationFile: filepath.Join(os.TempDir(), "soundcloud-token.txt"),
 	OutputFolder:      filepath.Join(".", "out"),
+	Logger:            log.Default(),
 }
 
 func (c *Client) SetDebug(b bool) {

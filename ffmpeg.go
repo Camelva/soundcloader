@@ -75,17 +75,18 @@ func (c *Client) ffmpegUpdateTags(filename string, metadata []string) error {
 	return nil
 }
 func (c *Client) ffmpegAddThumbnail(filename string, thumb string) error {
-	tmpFileName := fmt.Sprintf("%s.tmp", filename)
-	if err := os.Rename(filename, tmpFileName); err != nil {
-		return err
-	}
-	defer os.Remove(tmpFileName)
-
+	// try to download thumbnail first
 	thumbnailLocation, err := c.downloadThumbnail(thumb)
 	if err != nil {
 		return err
 	}
 	defer os.Remove(thumbnailLocation)
+
+	// if all good, rename file temporary
+	tmpFileName := fmt.Sprintf("%s.tmp", filename)
+	if err := os.Rename(filename, tmpFileName); err != nil {
+		return err
+	}
 
 	args := make([]string, 0)
 	args = append(args,
@@ -107,8 +108,13 @@ func (c *Client) ffmpegAddThumbnail(filename string, thumb string) error {
 
 	_, err = execute(ffmpegFindBin(), args...)
 	if err != nil {
+		// something went wrong, revert filename back before returning
+		_ = os.Rename(tmpFileName, filename)
 		return err
 	}
+
+	// everything's fine, delete temp file
+	_ = os.Remove(tmpFileName)
 
 	return nil
 }
